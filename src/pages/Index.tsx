@@ -48,15 +48,65 @@ const Index = () => {
         </section>
 
         {/* Footer */}
-        <footer className="border-t border-border py-8">
-          <div className="container mx-auto px-6 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded bg-primary flex items-center justify-center">
-                <span className="font-display text-primary-foreground text-xs leading-none">IA</span>
+        <footer className="border-t border-border py-12 mt-10">
+          <div className="container mx-auto px-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-8">
+              {/* Brand */}
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center">
+                    <span className="font-display text-primary-foreground text-lg leading-none">IA</span>
+                  </div>
+                  <span className="font-body text-sm text-foreground font-bold">ImagineApps</span>
+                </div>
+                <p className="font-body text-xs text-muted-foreground leading-relaxed">
+                  Soluciones digitales Plug&Play creadas por Imaginers para resolver problemas reales.
+                </p>
               </div>
-              <span className="font-body text-xs text-muted-foreground">© 2026 ImagineApps</span>
+
+              {/* Links */}
+              <div className="space-y-3">
+                <h4 className="font-display text-sm tracking-wider text-foreground">ENLACES</h4>
+                <ul className="space-y-2">
+                  <li>
+                    <a href="https://imagineapps.co/en/" target="_blank" rel="noopener noreferrer" className="font-body text-xs text-muted-foreground hover:text-primary transition-colors">
+                      Sitio Principal
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://imagineapps.co/en/#services" target="_blank" rel="noopener noreferrer" className="font-body text-xs text-muted-foreground hover:text-primary transition-colors">
+                      Servicios
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://imagineapps.co/en/#contact" target="_blank" rel="noopener noreferrer" className="font-body text-xs text-muted-foreground hover:text-primary transition-colors">
+                      Contacto
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Admin + Contact */}
+              <div className="space-y-3">
+                <h4 className="font-display text-sm tracking-wider text-foreground">ADMINISTRACIÓN</h4>
+                <ul className="space-y-2">
+                  <li>
+                    <a href="/admin" className="font-body text-xs text-muted-foreground hover:text-primary transition-colors">
+                      Portal Admin
+                    </a>
+                  </li>
+                  <li>
+                    <span className="font-body text-xs text-muted-foreground">info@imagineapps.co</span>
+                  </li>
+                </ul>
+              </div>
             </div>
-            <span className="font-body text-xs text-muted-foreground">Marketplace v1.0</span>
+
+            {/* Bottom bar */}
+            <div className="border-t border-border pt-6 flex items-center justify-between">
+              <span className="font-body text-xs text-muted-foreground">© 2026 ImagineApps. Todos los derechos reservados.</span>
+              <span className="font-body text-xs text-muted-foreground">Marketplace v1.0</span>
+            </div>
           </div>
         </footer>
       </main>
