@@ -104,7 +104,10 @@ const Index = () => {
 
             {/* Bottom bar */}
             <div className="border-t border-border pt-6 flex items-center justify-between">
-              <span className="font-body text-xs text-muted-foreground">© 2026 ImagineApps. Todos los derechos reservados.</span>
+              <div className="flex items-center gap-4">
+                <span className="font-body text-xs text-muted-foreground">© 2026 ImagineApps. Todos los derechos reservados.</span>
+                <a href="/terms" className="font-body text-xs text-muted-foreground hover:text-primary transition-colors">Términos y Condiciones</a>
+              </div>
               <span className="font-body text-xs text-muted-foreground">Marketplace v1.0</span>
             </div>
           </div>
