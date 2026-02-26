@@ -1,11 +1,23 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Package, BarChart3, LogOut, Plus } from "lucide-react";
+import { Package, BarChart3, LogOut, Plus, Pencil, Trash2, RotateCcw, XCircle } from "lucide-react";
 import { motion } from "framer-motion";
-import { MOCK_PRODUCTS } from "@/data/products";
+import { useProductStore } from "@/context/ProductStore";
+import { Product } from "@/data/products";
+import EditProductDialog from "@/components/admin/EditProductDialog";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
+  const { products, trashedProducts, updateProduct, trashProduct, restoreProduct, permanentDelete } = useProductStore();
+
+  const [editProduct, setEditProduct] = useState<Product | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<{ id: string; permanent: boolean } | null>(null);
 
   useEffect(() => {
     const isAdmin = localStorage.getItem("ia-admin");
@@ -15,6 +27,16 @@ const AdminDashboard = () => {
   const handleLogout = () => {
     localStorage.removeItem("ia-admin");
     navigate("/admin");
+  };
+
+  const handleConfirmDelete = () => {
+    if (!deleteConfirm) return;
+    if (deleteConfirm.permanent) {
+      permanentDelete(deleteConfirm.id);
+    } else {
+      trashProduct(deleteConfirm.id);
+    }
+    setDeleteConfirm(null);
   };
 
   return (
@@ -30,10 +52,10 @@ const AdminDashboard = () => {
           </div>
 
           <div className="flex items-center gap-4">
-            <button className="flex items-center gap-2 px-4 py-2 rounded-md bg-primary text-primary-foreground font-body text-sm font-bold hover:opacity-90 transition-opacity">
+            <Button className="font-body text-sm font-bold gap-2">
               <Plus className="w-4 h-4" />
               Nuevo Producto
-            </button>
+            </Button>
             <button
               onClick={handleLogout}
               className="flex items-center gap-2 p-2 rounded-md hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
@@ -49,8 +71,8 @@ const AdminDashboard = () => {
         {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
           {[
-            { label: "Productos Activos", value: MOCK_PRODUCTS.length, icon: Package },
-            { label: "Ventas Totales", value: 0, icon: BarChart3 },
+            { label: "Productos Activos", value: products.length, icon: Package },
+            { label: "En Papelera", value: trashedProducts.length, icon: Trash2 },
             { label: "Tasa de Abandono", value: "0%", icon: BarChart3 },
           ].map((stat, i) => (
             <motion.div
@@ -69,34 +91,146 @@ const AdminDashboard = () => {
           ))}
         </div>
 
-        {/* Product list */}
-        <div className="space-y-4">
-          <h2 className="font-display text-2xl tracking-wider text-foreground">PRODUCTOS</h2>
-          <div className="grid grid-cols-1 gap-3">
-            {MOCK_PRODUCTS.map((product, i) => (
-              <motion.div
-                key={product.id}
-                initial={{ opacity: 0, x: -12 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.05 }}
-                className="glass rounded-lg p-4 border border-border flex items-center justify-between"
-              >
-                <div className="flex items-center gap-4">
-                  <img src={product.mainImage} alt={product.name} className="w-12 h-12 rounded-md object-cover" />
-                  <div>
-                    <h3 className="font-body font-bold text-foreground">{product.name}</h3>
-                    <p className="font-body text-xs text-muted-foreground">{product.brief}</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4">
-                  <span className="font-display text-lg text-primary">${product.price}</span>
-                  <span className="font-body text-xs text-muted-foreground">v{product.version}</span>
-                </div>
-              </motion.div>
-            ))}
+        {/* Product list with tabs */}
+        <Tabs defaultValue="active" className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="font-display text-2xl tracking-wider text-foreground">PRODUCTOS</h2>
+            <TabsList className="bg-secondary border border-border">
+              <TabsTrigger value="active" className="font-body text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                Activos ({products.length})
+              </TabsTrigger>
+              <TabsTrigger value="trash" className="font-body text-sm data-[state=active]:bg-destructive data-[state=active]:text-destructive-foreground">
+                Papelera ({trashedProducts.length})
+              </TabsTrigger>
+            </TabsList>
           </div>
-        </div>
+
+          {/* Active products */}
+          <TabsContent value="active" className="space-y-3">
+            {products.length === 0 ? (
+              <p className="text-center py-12 font-body text-muted-foreground">No hay productos activos.</p>
+            ) : (
+              products.map((product, i) => (
+                <motion.div
+                  key={product.id}
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  className="glass rounded-lg p-4 border border-border flex items-center justify-between"
+                >
+                  <div className="flex items-center gap-4 min-w-0">
+                    <img src={product.mainImage} alt={product.name} className="w-12 h-12 rounded-md object-cover flex-shrink-0" />
+                    <div className="min-w-0">
+                      <h3 className="font-body font-bold text-foreground truncate">{product.name}</h3>
+                      <p className="font-body text-xs text-muted-foreground truncate">{product.brief}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 flex-shrink-0 ml-4">
+                    <span className="font-display text-lg text-primary">${product.price}</span>
+                    <span className="font-body text-xs text-muted-foreground hidden sm:inline">v{product.version}</span>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => setEditProduct(product)}
+                      className="text-muted-foreground hover:text-foreground"
+                      aria-label="Editar producto"
+                    >
+                      <Pencil className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => setDeleteConfirm({ id: product.id, permanent: false })}
+                      className="text-muted-foreground hover:text-destructive"
+                      aria-label="Enviar a papelera"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </motion.div>
+              ))
+            )}
+          </TabsContent>
+
+          {/* Trash */}
+          <TabsContent value="trash" className="space-y-3">
+            {trashedProducts.length === 0 ? (
+              <p className="text-center py-12 font-body text-muted-foreground">La papelera está vacía.</p>
+            ) : (
+              trashedProducts.map((product, i) => (
+                <motion.div
+                  key={product.id}
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  className="glass rounded-lg p-4 border border-border flex items-center justify-between opacity-70"
+                >
+                  <div className="flex items-center gap-4 min-w-0">
+                    <img src={product.mainImage} alt={product.name} className="w-12 h-12 rounded-md object-cover flex-shrink-0 grayscale" />
+                    <div className="min-w-0">
+                      <h3 className="font-body font-bold text-foreground truncate">{product.name}</h3>
+                      <p className="font-body text-xs text-muted-foreground truncate">{product.brief}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 flex-shrink-0 ml-4">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => restoreProduct(product.id)}
+                      className="text-muted-foreground hover:text-primary"
+                      aria-label="Restaurar producto"
+                    >
+                      <RotateCcw className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => setDeleteConfirm({ id: product.id, permanent: true })}
+                      className="text-muted-foreground hover:text-destructive"
+                      aria-label="Eliminar permanentemente"
+                    >
+                      <XCircle className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </motion.div>
+              ))
+            )}
+          </TabsContent>
+        </Tabs>
       </main>
+
+      {/* Edit dialog */}
+      <EditProductDialog
+        product={editProduct}
+        open={!!editProduct}
+        onClose={() => setEditProduct(null)}
+        onSave={updateProduct}
+      />
+
+      {/* Delete confirmation */}
+      <AlertDialog open={!!deleteConfirm} onOpenChange={(o) => !o && setDeleteConfirm(null)}>
+        <AlertDialogContent className="glass border-border">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="font-display tracking-wider text-foreground">
+              {deleteConfirm?.permanent ? "ELIMINAR PERMANENTEMENTE" : "ENVIAR A PAPELERA"}
+            </AlertDialogTitle>
+            <AlertDialogDescription className="font-body text-muted-foreground">
+              {deleteConfirm?.permanent
+                ? "Esta acción no se puede deshacer. El producto se eliminará permanentemente."
+                : "El producto se moverá a la papelera. Podrás restaurarlo después."}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="font-body">Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleConfirmDelete}
+              className={deleteConfirm?.permanent ? "bg-destructive text-destructive-foreground hover:bg-destructive/90 font-body font-bold" : "font-body font-bold"}
+            >
+              {deleteConfirm?.permanent ? "Eliminar" : "Mover a papelera"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
