@@ -16,22 +16,22 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="font-display text-5xl sm:text-7xl md:text-8xl gradient-text leading-none mb-6"
-        >
-          SOLUCIONES PLUG & PLAY
+          className="font-display text-5xl sm:text-7xl gradient-text leading-none mb-6 md:text-8xl font-extrabold bg-primary-foreground">Potencia tus Proyectos 
+con Soluciones Plug & Play de Calidad
+
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.15 }}
-          className="font-body text-muted-foreground text-base sm:text-lg max-w-xl mx-auto"
-        >
-          Productos digitales funcionales creados por Imaginers.
-          Listos para descargar, instalar y usar.
+          className="font-body text-muted-foreground text-base sm:text-lg max-w-xl mx-auto">Descarga, instala y usa al instante productos funcionales con el sello de calidad ImagienApps. 
+
+
+
         </motion.p>
       </div>
-    </section>
-  );
+    </section>);
+
 };
 
 export default HeroSection;

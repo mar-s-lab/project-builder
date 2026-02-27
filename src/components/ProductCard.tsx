@@ -12,31 +12,31 @@ const ProductCard = ({ product, index }: ProductCardProps) => {
   const { addItem, items } = useCart();
   const isInCart = items.some((i) => i.product.id === product.id);
 
-  const discountedPrice = product.discount
-    ? product.price - (product.price * product.discount) / 100
-    : null;
+  const discountedPrice = product.discount ?
+  product.price - product.price * product.discount / 100 :
+  null;
 
   return (
     <motion.article
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.08, duration: 0.4 }}
-      className="group rounded-lg overflow-hidden bg-card border border-border hover:border-primary/40 transition-all duration-300"
-    >
+      className="group rounded-lg overflow-hidden bg-card border border-border hover:border-primary/40 transition-all duration-300">
+
       {/* Image */}
       <div className="relative overflow-hidden aspect-[3/2]">
         <img
           src={product.mainImage}
           alt={product.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          loading="lazy"
-        />
-        {product.discount && (
-          <span className="absolute top-3 right-3 bg-primary text-primary-foreground text-xs font-bold px-2 py-1 rounded-md flex items-center gap-1">
+          loading="lazy" />
+
+        {product.discount &&
+        <span className="absolute top-3 right-3 text-primary-foreground text-xs font-bold px-2 py-1 rounded-md flex items-center gap-1 bg-[#7c4dff]">
             <Tag className="w-3 h-3" />
             -{product.discount}%
           </span>
-        )}
+        }
       </div>
 
       {/* Content */}
@@ -54,11 +54,11 @@ const ProductCard = ({ product, index }: ProductCardProps) => {
 
         {/* Technologies */}
         <div className="flex flex-wrap gap-1.5">
-          {product.technology.map((tech) => (
-            <span key={tech} className="text-[11px] font-body bg-secondary text-secondary-foreground px-2 py-0.5 rounded">
+          {product.technology.map((tech) =>
+          <span key={tech} className="text-[11px] font-body px-2 py-0.5 rounded text-primary-foreground bg-[#7c4dff]/40">
               {tech}
             </span>
-          ))}
+          )}
         </div>
 
         {/* Price + Action */}
@@ -67,28 +67,28 @@ const ProductCard = ({ product, index }: ProductCardProps) => {
             <span className="font-display text-2xl text-foreground">
               ${discountedPrice ? discountedPrice.toFixed(0) : product.price}
             </span>
-            {discountedPrice && (
-              <span className="text-sm text-muted-foreground line-through font-body">
+            {discountedPrice &&
+            <span className="text-sm text-muted-foreground line-through font-body">
                 ${product.price}
               </span>
-            )}
+            }
           </div>
           <button
             onClick={() => addItem(product)}
             disabled={isInCart}
             className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-bold font-body transition-colors ${
-              isInCart
-                ? "bg-secondary text-muted-foreground cursor-default"
-                : "bg-primary text-primary-foreground hover:bg-primary/90"
-            }`}
-          >
+            isInCart ?
+            "bg-secondary text-muted-foreground cursor-default" :
+            "bg-primary text-primary-foreground hover:bg-primary/90"}`
+            }>
+
             <ShoppingCart className="w-4 h-4" />
             {isInCart ? "Agregado" : "Agregar"}
           </button>
         </div>
       </div>
-    </motion.article>
-  );
+    </motion.article>);
+
 };
 
 export default ProductCard;
