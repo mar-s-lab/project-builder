@@ -14,10 +14,10 @@ const Index = () => {
     const q = search.toLowerCase();
     return MOCK_PRODUCTS.filter(
       (p) =>
-        p.name.toLowerCase().includes(q) ||
-        p.brief.toLowerCase().includes(q) ||
-        p.description.toLowerCase().includes(q) ||
-        p.technology.some((t) => t.toLowerCase().includes(q))
+      p.name.toLowerCase().includes(q) ||
+      p.brief.toLowerCase().includes(q) ||
+      p.description.toLowerCase().includes(q) ||
+      p.technology.some((t) => t.toLowerCase().includes(q))
     );
   }, [search]);
 
@@ -33,18 +33,18 @@ const Index = () => {
         <section className="relative z-10 container mx-auto px-6 pb-20 space-y-10 -mt-4">
           <SearchBar value={search} onChange={setSearch} />
 
-          {filtered.length === 0 ? (
-            <div className="text-center py-20">
+          {filtered.length === 0 ?
+          <div className="text-center py-20">
               <p className="font-display text-2xl text-muted-foreground">NO SE ENCONTRARON PRODUCTOS</p>
               <p className="font-body text-sm text-muted-foreground mt-2">Intenta con otra búsqueda</p>
+            </div> :
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filtered.map((product, i) =>
+            <ProductCard key={product.id} product={product} index={i} />
+            )}
             </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filtered.map((product, i) => (
-                <ProductCard key={product.id} product={product} index={i} />
-              ))}
-            </div>
-          )}
+          }
         </section>
 
         {/* Footer */}
@@ -60,7 +60,7 @@ const Index = () => {
                   <span className="font-body text-sm text-foreground font-bold">ImagineApps</span>
                 </div>
                 <p className="font-body text-xs text-muted-foreground leading-relaxed">
-                  Soluciones digitales Plug&Play creadas por Imaginers para resolver problemas reales.
+                  Portafolio de cracks y soluciones digitales creadas por Imaginers para resolver problemas reales. En un par de clicks consigue resolver tus problemas, sin complicaciones ni instalacion                    
                 </p>
               </div>
 
@@ -118,8 +118,8 @@ const Index = () => {
           </div>
         </footer>
       </main>
-    </div>
-  );
+    </div>);
+
 };
 
 export default Index;
