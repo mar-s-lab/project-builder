@@ -96,6 +96,11 @@ const Index = () => {
                     </a>
                   </li>
                   <li>
+                    <a href="https://forms.gle/Y7GauykjxHmRF6e59" target="_blank" rel="noopener noreferrer" className="font-body text-xs text-muted-foreground hover:text-primary transition-colors">
+                      Enviar un producto nuevo
+                    </a>
+                  </li>
+                  <li>
                     <span className="font-body text-xs text-muted-foreground">info@imagineapps.co</span>
                   </li>
                 </ul>
