@@ -57,7 +57,7 @@ const Index = () => {
                   <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center">
                     <span className="font-display text-primary-foreground text-lg leading-none">IA</span>
                   </div>
-                  <span className="font-body text-sm text-foreground font-bold">ImagineApps</span>
+                  <span className="font-body text-sm text-foreground font-bold">ImagineApps Marketplace</span>
                 </div>
                 <p className="font-body text-xs text-muted-foreground leading-relaxed">
                   Portafolio de cracks y soluciones digitales creadas por Imaginers para resolver problemas reales. En un par de clicks consigue resolver tus problemas, sin complicaciones ni instalacion                    
@@ -69,17 +69,17 @@ const Index = () => {
                 <h4 className="font-display text-sm tracking-wider text-foreground">ENLACES</h4>
                 <ul className="space-y-2">
                   <li>
-                    <a href="https://imagineapps.co/en/" target="_blank" rel="noopener noreferrer" className="font-body text-xs text-muted-foreground hover:text-primary transition-colors">
+                    <a href="https://imagineapps.co/en/" target="_blank" rel="noopener noreferrer" className="font-body text-muted-foreground hover:text-primary transition-colors text-sm">
                       Sitio Principal
                     </a>
                   </li>
                   <li>
-                    <a href="https://imagineapps.co/en/#services" target="_blank" rel="noopener noreferrer" className="font-body text-xs text-muted-foreground hover:text-primary transition-colors">
+                    <a href="https://imagineapps.co/en/#services" target="_blank" rel="noopener noreferrer" className="font-body text-muted-foreground hover:text-primary transition-colors text-sm">
                       Servicios
                     </a>
                   </li>
                   <li>
-                    <a href="https://imagineapps.co/en/#contact" target="_blank" rel="noopener noreferrer" className="font-body text-xs text-muted-foreground hover:text-primary transition-colors">
+                    <a href="https://imagineapps.co/en/#contact" target="_blank" rel="noopener noreferrer" className="font-body text-muted-foreground hover:text-primary transition-colors text-sm">
                       Contacto
                     </a>
                   </li>
@@ -91,17 +91,17 @@ const Index = () => {
                 <h4 className="font-display text-sm tracking-wider text-foreground">ADMINISTRACIÓN</h4>
                 <ul className="space-y-2">
                   <li>
-                    <a href="/admin" className="font-body text-xs text-muted-foreground hover:text-primary transition-colors">
+                    <a href="/admin" className="font-body text-muted-foreground hover:text-primary transition-colors text-sm">
                       Portal Admin
                     </a>
                   </li>
                   <li>
-                    <a href="https://forms.gle/Y7GauykjxHmRF6e59" target="_blank" rel="noopener noreferrer" className="font-body text-xs text-muted-foreground hover:text-primary transition-colors">
+                    <a href="https://forms.gle/Y7GauykjxHmRF6e59" target="_blank" rel="noopener noreferrer" className="font-body text-muted-foreground hover:text-primary transition-colors text-sm">
                       Enviar un producto nuevo
                     </a>
                   </li>
                   <li>
-                    <span className="font-body text-xs text-muted-foreground">info@imagineapps.co</span>
+                    <span className="font-body text-muted-foreground text-sm">info@imagineapps.co</span>
                   </li>
                 </ul>
               </div>
